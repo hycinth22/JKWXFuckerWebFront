@@ -1,0 +1,161 @@
+<template>
+	<div>
+		<b-table id="accountList" striped hover :items="items" :fields="fields" responsive>
+		<template slot="CreatedAt" slot-scope="data">
+      {{ data.item.CreatedAt | timeFormart }}
+		</template>
+		<template slot="School" slot-scope="data">
+      {{ data.item.SchoolID | schoolFormat }}
+		</template>
+		<template slot="RunDistance" slot-scope="data">
+      {{ data.item.RunDistance | DistanceFormat }}
+		</template>
+		<template slot="Status" slot-scope="data">
+      <span :class="data.item.Status|StatusShowClass">
+			{{ data.item.Status | StatusFormat }}
+      </span>
+		</template>
+		<template slot="LastResult" slot-scope="data">
+      <span :class="data.item.LastResult|ResultShowClass">
+			{{ data.item.LastResult | ResultFormat }}
+      </span>
+		</template>
+		<template slot="LastTime" slot-scope="data">
+      {{ data.item.LastTime | timeFormart }}
+		</template>
+		<template slot="operate" slot-scope="data">
+      <AccountListItemOperator :account="data.item" :modal_progress_info.sync="modal_progress_info" :modal_log_info.sync="modal_log_info"/>
+		</template>
+		</b-table>
+		<AccountProgressModal :uid="modal_progress_info.uid" :schoolName="modal_progress_info.schoolID|schoolFormat" :stuNum="modal_progress_info.stuNum"/>
+		<AccountLogModal :uid="modal_log_info.uid" :schoolName="modal_log_info.schoolID|schoolFormat" :stuNum="modal_log_info.stuNum"/>
+	</div>
+</template>
+
+<script>
+import AccountListItemOperator from './AccountListItemOperator.vue'
+import AccountProgressModal from './AccountProgressModal.vue'
+import AccountLogModal from './AccountLogModal.vue'
+export default {
+  name: 'AccountList',
+  components: {
+    AccountListItemOperator,
+	AccountProgressModal,
+	AccountLogModal,
+  },
+  props: {
+    items: {
+      type: Array,
+      default() {
+        return [];
+      }
+    },
+  },
+  data: function() {
+    return {
+      fields: {
+        ID: {
+          label: '编号',
+          sortable: true,
+        },
+        CreatedAt: {
+          label: '创建时间',
+          sortable: true,
+        },
+        School: {
+          label: '学校',
+          sortable: true,
+        },
+        StuNum: {
+          label: '学号',
+          sortable: true,
+        },
+        RunDistance: {
+            label: '每日应跑公里',
+        },
+        Status: {
+            label: '执行状态',
+        },
+        LastResult: {
+            label: '上次运行结果',
+        },
+        LastTime: {
+            label: '上次运行时间',
+            sortable: true,
+        },
+        operate: {
+            label: '操作',
+        },
+      },
+      modal_progress_info: {},
+      modal_log_info: {},
+    };
+  },
+  methods: {
+  },
+  filters: {
+    timeFormart(timeStr) {
+      return new Date(timeStr).toLocaleString(undefined,{localeMatcher:"lookup",hour12:false});
+    },
+    schoolFormat(schoolID) {
+      const table = {
+        60: "长春大学",
+        67: "长春科技学院",
+        68: "吉林工商学院",
+        69: "吉林工程技术师范学院",
+      };
+      let formated = table[schoolID];
+      return formated?formated:schoolID;
+    },
+    StatusShowClass(raw) {
+      const table = {
+        normal: "text-secondary",
+        pause: "text-secondary",
+        running: "text-info",
+        finished: "text-primary",
+        suspend: "text-danger",
+        terminated: "text-dark",
+        aborted: "text-dark",
+      };
+      let formated = table[raw];
+      return formated?formated:raw;
+    },
+    StatusFormat(raw) {
+      const table = {
+        normal: "正常",
+        pause: "暂停(pause)",
+        running: "正在执行",
+        finished: "完成",
+        suspend: "暂停(suspend)",
+        terminated: "终止",
+        aborted: "中断",
+      };
+      let formated = table[raw];
+      return formated?formated:raw;
+    },
+    ResultShowClass(raw) {
+      const table = {
+        success: "text-success",
+        error: "text-danger",
+      };
+      let formated = table[raw];
+      return formated?formated:raw;
+    },
+    ResultFormat(raw) {
+      const table = {
+        success: "成功",
+        error: "错误",
+      };
+      let formated = table[raw];
+      return formated?formated:raw;
+    },
+	DistanceFormat(raw) {
+		return raw.toFixed(3);
+	}
+  },
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+</style>
