@@ -5,7 +5,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build:mac": "NODE_ELECTRON=true npx electron-packager . jkwxfuckerwebv3 --platform=darwin --out ./dist_electron --overwrite --ignore=node_modules/* --ignore=.git --ignore=public/ --ignore=dist_electron --asar",
+    "build:linux": "NODE_ELECTRON=true npx electron-packager . jkwxfuckerwebv3 --platform=linux --out ./dist_electron --overwrite  --ignore=node_modules/* --ignore=.git --ignore=public/ --ignore=dist_electron --asar",
+    "build:win": "npx electron-packager . jkwxfuckerwebv3 --platform=win32 --out ./dist_electron --overwrite  --ignore=node_modules/* --ignore=.git --ignore=public/ --ignore=dist_electron --asar"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -19,6 +22,7 @@
     "@vue/cli-plugin-eslint": "^3.7.0",
     "@vue/cli-service": "^3.7.0",
     "babel-eslint": "^10.0.1",
+    "electron": "^5.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "vue-template-compiler": "^2.5.21"
