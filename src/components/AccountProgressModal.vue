@@ -1,5 +1,5 @@
 <template>
-	<b-modal id="modal-progress" size="lg" :title="modalTitle" ok-only="true">
+	<b-modal id="modal-progress" size="lg" :title="modalTitle" ok-only>
     <p class="text-primary" v-if="isLoading">获取中……<p>
     <div v-if="!isLoading">
       <b-progress :value="sportResult.ComputedDistance" :max="sportResult.QualifiedDistance" animated></b-progress>

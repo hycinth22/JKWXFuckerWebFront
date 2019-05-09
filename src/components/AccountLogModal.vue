@@ -1,5 +1,5 @@
 <template>
-	<b-modal id="modal-log" size="lg" :title="modalTitle" ok-only="true">
+	<b-modal id="modal-log" size="lg" :title="modalTitle" ok-only>
 	<div class="container">
 		<p class="text-primary" v-if="isLoading">获取中……<p>
 		<div v-if="!isLoading">
