@@ -24,6 +24,10 @@
         </b-navbar>
     </header>
     <div class="row">
+        <b-form-input v-model="searchKey" placeholder="Input here to search"></b-form-input>
+        {{searchKey}}
+    </div>
+    <div class="row">
         <AccountList class="col-lg-12" :items="wanted_accounts" />
     </div>
     <div class="row">
@@ -53,10 +57,25 @@ export default {
       username: "管理员",
       accounts: [],
       hidden_terminated: "yes",
+      searchKey: "",
     };
   },
   computed: {
     wanted_accounts() {
+        let skey = this.searchKey;
+        if (skey.length > 0) {
+            return this.filtered_accounts.filter(acc=> {
+                for (let key in acc) {
+                    if (acc[key] && acc[key].toString().indexOf(skey)!=-1) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+        return this.filtered_accounts;
+    },
+    filtered_accounts() {
         if (this.hidden_terminated) {
             return Array.from(this.accounts).filter(acc=>acc.Status!='terminated');
         }
