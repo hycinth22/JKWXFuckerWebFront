@@ -10,6 +10,9 @@
 		<template slot="RunDistance" slot-scope="data">
       {{ data.item.RunDistance | DistanceFormat }}
 		</template>
+		<template slot="FinishDistance" slot-scope="data">
+      {{ data.item.FinishDistance | DistanceFormat }}
+		</template>
 		<template slot="Status" slot-scope="data">
       <span :class="data.item.Status|StatusShowClass">
 			{{ data.item.Status | StatusFormat }}
@@ -72,6 +75,9 @@ export default {
         },
         RunDistance: {
             label: '每日应跑公里',
+        },
+        FinishDistance: {
+            label: '订单结单公里',
         },
         Status: {
             label: '执行状态',
