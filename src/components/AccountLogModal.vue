@@ -14,6 +14,7 @@
             <div class="row">
                 <p class="col-sm-4 text-left text-info">共 {{total}} 条日志 </p>
                 <b-pagination class="col-sm-8" align="right" size="md" :total-rows="total" v-model="page" :per-page="num" @input="update()"></b-pagination>
+                <b-form-input v-model="num" placeholder="Items Amount Per Page" @blur="update()" ></b-form-input>
             </div>
         </div>
     </div>
@@ -75,7 +76,7 @@ export default {
   },
   methods: {
     update() {
-      this.isLoading=true;
+      this.isLoading=true; this.logs=[];
       service.getAccountLog(this.uid, this.offset, this.num).then((result)=>{this.logs = result.Items; this.total=result.TotalAmount;}).then(()=>this.isLoading=false);
     },
   },

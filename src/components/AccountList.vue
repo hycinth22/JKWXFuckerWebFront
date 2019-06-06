@@ -89,6 +89,9 @@ export default {
             label: '上次运行时间',
             sortable: true,
         },
+        Memo: {
+            label: '备注',
+        },
         operate: {
             label: '操作',
         },

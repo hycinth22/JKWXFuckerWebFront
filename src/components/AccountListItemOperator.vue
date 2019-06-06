@@ -1,7 +1,7 @@
 <template>
   <b-row>
-    <b-button v-b-modal.modal-progress @click="progressModal">进度</b-button>
-    <b-button v-b-modal.modal-log @click="logModal">日志</b-button>
+    <b-button :id="`btn-progress-${account.ID}`" v-b-modal.modal-progress @click="progressModal">进度</b-button>
+    <b-button :id="`btn-log-${account.ID}`" v-b-modal.modal-log @click="logModal">日志</b-button>
   </b-row>
 </template>
 
