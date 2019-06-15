@@ -10,8 +10,9 @@
 		<template slot="RunDistance" slot-scope="data">
       {{ data.item.RunDistance | DistanceFormat }}
 		</template>
-		<template slot="FinishDistance" slot-scope="data">
-      {{ data.item.FinishDistance | FinishDistanceFormat }}
+		<template slot="DistanceRange" slot-scope="data">
+      {{ data.item.StartDistance | DistanceFormat }} - {{ data.item.FinishDistance | DistanceFormat }}
+      ({{ (data.item.FinishDistance-data.item.StartDistance) | DistanceFormat }})
 		</template>
 		<template slot="Status" slot-scope="data">
       <span :class="data.item.Status|StatusShowClass">
@@ -76,8 +77,8 @@ export default {
         RunDistance: {
             label: '每日应跑公里',
         },
-        FinishDistance: {
-            label: '特殊要求的结单公里',
+        DistanceRange: {
+            label: '距离区间',
         },
         Status: {
             label: '执行状态',
@@ -159,11 +160,8 @@ export default {
       return formated?formated:raw;
     },
 	DistanceFormat(raw) {
-		return raw.toFixed(3);
+		return raw.toFixed(2);
 	},
-    FinishDistanceFormat(raw) {
-		return raw!==0.0?raw.toFixed(3):'-';
-	}
   },
 };
 </script>
