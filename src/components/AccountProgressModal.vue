@@ -18,7 +18,7 @@ export default {
       if (this.isLoading) {
         return this.schoolName+' '+this.stuNum;
       }
-      return this.schoolName+' '+this.stuNum + "("+  this.sportResult.Year + "," + this.sportResult.Term + ") —— " + this.$options.filters.timeFormart(this.sportResult.FetchTime);
+      return this.schoolName+' '+this.stuNum + "("+  this.sportResult.Year + "," + this.sportResult.Term + ") —— 跑步进度更新时间：" + this.$options.filters.timeFormart(this.sportResult.FetchTime);
     },
   },
   props: {
