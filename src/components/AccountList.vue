@@ -50,6 +50,7 @@ import AccountListItemOperator from './AccountListItemOperator.vue'
 import AccountProgressModal from './AccountProgressModal.vue'
 import AccountLogModal from './AccountLogModal.vue'
 import AccountQuickCopyModal from './AccountQuickCopyModal.vue'
+import utils from '../utils/utils.js'
 export default {
   name: 'AccountList',
   components: {
@@ -119,7 +120,7 @@ export default {
       return new Date(timeStr).toLocaleString(undefined,{localeMatcher:"lookup",hour12:false});
     },
     schoolFormat(schoolID) {
-        return 
+        return utils.getSchoolName(schoolID);
     },
     StatusShowClass(raw) {
       const table = {
@@ -135,17 +136,7 @@ export default {
       return formated?formated:raw;
     },
     StatusFormat(raw) {
-      const table = {
-        normal: "正常",
-        pause: "暂停(pause)",
-        running: "正在执行",
-        finished: "完成",
-        suspend: "暂停(suspend)",
-        terminated: "终止",
-        aborted: "中断",
-      };
-      let formated = table[raw];
-      return formated?formated:raw;
+        return utils.getStatusText(raw);
     },
     ResultShowClass(raw) {
       const table = {
@@ -156,15 +147,10 @@ export default {
       return formated?formated:raw;
     },
     ResultFormat(raw) {
-      const table = {
-        success: "成功",
-        error: "错误",
-      };
-      let formated = table[raw];
-      return formated?formated:raw;
+        return utils.getResultText(raw);
     },
 	DistanceFormat(raw) {
-		return raw.toFixed(2);
+        return utils.formatDistance(raw);
 	},
   },
 };
