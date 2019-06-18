@@ -9,6 +9,7 @@
 		</template>
 		<template slot="RunDistance" slot-scope="data">
       {{ data.item.RunDistance | DistanceFormat }}
+      (预计还需 ?? 天)
 		</template>
 		<template slot="DistanceRange" slot-scope="data">
       {{ data.item.StartDistance | DistanceFormat }} - {{ data.item.FinishDistance | DistanceFormat }}
@@ -28,11 +29,19 @@
       {{ data.item.LastTime | timeFormart }}
 		</template>
 		<template slot="operate" slot-scope="data">
-      <AccountListItemOperator :account="data.item" :modal_progress_info.sync="modal_progress_info" :modal_log_info.sync="modal_log_info"/>
+        <AccountListItemOperator :account="data.item" :modal_progress_info.sync="modal_progress_info" :modal_log_info.sync="modal_log_info"/>
 		</template>
 		</b-table>
+        
+        <div class="row">
+            <div class="col-sm-4">
+                <b-button v-b-modal.modal-quickCopy>快速复制</b-button>
+            </div>
+        </div>
+    
 		<AccountProgressModal :uid="modal_progress_info.uid" :schoolName="modal_progress_info.schoolID|schoolFormat" :stuNum="modal_progress_info.stuNum"/>
 		<AccountLogModal :uid="modal_log_info.uid" :schoolName="modal_log_info.schoolID|schoolFormat" :stuNum="modal_log_info.stuNum"/>
+        <AccountQuickCopyModal :accounts="items" />
 	</div>
 </template>
 
@@ -40,12 +49,14 @@
 import AccountListItemOperator from './AccountListItemOperator.vue'
 import AccountProgressModal from './AccountProgressModal.vue'
 import AccountLogModal from './AccountLogModal.vue'
+import AccountQuickCopyModal from './AccountQuickCopyModal.vue'
 export default {
   name: 'AccountList',
   components: {
     AccountListItemOperator,
-	AccountProgressModal,
-	AccountLogModal,
+    AccountProgressModal,
+    AccountLogModal,
+    AccountQuickCopyModal,
   },
   props: {
     items: {
@@ -108,14 +119,7 @@ export default {
       return new Date(timeStr).toLocaleString(undefined,{localeMatcher:"lookup",hour12:false});
     },
     schoolFormat(schoolID) {
-      const table = {
-        60: "长春大学",
-        67: "长春科技学院",
-        68: "吉林工商学院",
-        69: "吉林工程技术师范学院",
-      };
-      let formated = table[schoolID];
-      return formated?formated:schoolID;
+        return 
     },
     StatusShowClass(raw) {
       const table = {

@@ -38,6 +38,7 @@
             </b-form-checkbox>
         </div>
         <div class="col-sm-4">
+            <b-button @click="calcTotalDistance">计算区间长度总和</b-button>
             <b-button @click="updateList">刷新列表</b-button>
         </div>
     </div>
@@ -91,6 +92,12 @@ export default {
     },
     updateList() {
       service.getAllAccounts().then((acc)=>this.accounts = acc);
+    },
+    calcTotalDistance() {
+        let total = this.wanted_accounts.reduce(function(total, currentValue) {
+            return total+(currentValue.FinishDistance-currentValue.StartDistance);
+        },0);
+        alert(total.toFixed(2));
     },
   },
   mounted() {
