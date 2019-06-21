@@ -22,6 +22,7 @@ function getStatusText(status) {
       suspend: "暂停(suspend)",
       terminated: "终止",
       aborted: "中断",
+      inqueue: "执行前排队",
     };
     let formated = table[status];
     return formated?formated:status;
