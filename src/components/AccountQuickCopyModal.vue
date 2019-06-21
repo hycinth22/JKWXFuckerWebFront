@@ -8,6 +8,11 @@
         @focus="$event.currentTarget.select()"> // 获得焦点即自动选中文字
         </b-form-textarea>
         </div>
+        <div class="row">
+            <b-form-checkbox v-model="withrange" value="yes" unchecked-value="">
+              显示距离区间
+            </b-form-checkbox>
+        </div>
     </div>
     </b-modal>
 </template>
@@ -19,15 +24,19 @@ export default {
   computed: {
     accountQuickCopyText() {
         let totalDistance = 0.0;
-        return this.accounts.reduce(function(result, cur){
-            totalDistance += cur.FinishDistance-cur.StartDistance;
-            return result+= utils.getSchoolName(cur.SchoolID) + " | " + cur.StuNum + " | "+(cur.FinishDistance-cur.StartDistance).toFixed(2) + "\n";
-        }, "") 
-        + "共计" + this.accounts.length + "个帐号" + totalDistance.toFixed(2) + "公里";
+        return this.accounts.reduce((result, cur)=>{
+            let distance = cur.FinishDistance-cur.StartDistance;
+            totalDistance += distance;
+            return result
+            + utils.getSchoolName(cur.SchoolID) + " | " + cur.StuNum 
+            + " | " + this.generateDistanceText(cur.StartDistance, cur.FinishDistance, distance, this.withrange)
+            + "\n";
+        }, "") + "共计" + this.accounts.length + "个帐号" + totalDistance.toFixed(2) + "公里";
     },
   },
   props: {
     accounts: Array,
+    withrange: Boolean,
   },
   data: function() {
     return {};
@@ -35,6 +44,12 @@ export default {
   filters: {
   },
   methods: {
+    generateDistanceText(start, finish, distance, withrange) {
+        if (withrange) {
+            return start.toFixed(2) + "-" + finish.toFixed(2) + " \t(" + distance.toFixed(2) + ")";
+        }
+        return distance.toFixed(2);
+    },
     clear() {
         this.accounts = [];
     },
