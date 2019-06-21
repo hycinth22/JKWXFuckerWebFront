@@ -1,5 +1,5 @@
 <template>
-	<b-modal id="modal-quickCopy" size="lg" title="快速复制" ok-only @shown="selectCopyAreaText">
+	<b-modal id="modal-quickCopy" size="lg" title="快速复制" ok-only>
 	<div class="container">
         <div class="row">
         <b-form-textarea ref="copyarea" id="textarea-plaintext" plaintext 
