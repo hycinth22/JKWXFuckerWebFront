@@ -1,14 +1,14 @@
 {
-  "name": "jkwxfuckerwebv3",
+  "name": "jkwxrunnerweb",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build:mac": "NODE_ELECTRON=true npx electron-packager . jkwxfuckerwebv3 --platform=darwin --out ./dist_electron --overwrite --ignore=node_modules/* --ignore=.git --ignore=public/ --ignore=dist_electron --asar",
-    "build:linux": "NODE_ELECTRON=true npx electron-packager . jkwxfuckerwebv3 --platform=linux --out ./dist_electron --overwrite  --ignore=node_modules/* --ignore=.git --ignore=public/ --ignore=dist_electron --asar",
-    "build:win": "npx electron-packager . jkwxfuckerwebv3 --platform=win32 --out ./dist_electron --overwrite  --ignore=node_modules/* --ignore=.git --ignore=public/ --ignore=dist_electron --asar"
+    "build:mac": "NODE_ELECTRON=true npx electron-packager . jkwxrunnerweb --platform=darwin --out ./dist_electron --overwrite --ignore=node_modules/* --ignore=.git --ignore=public/ --ignore=dist_electron --asar",
+    "build:linux": "NODE_ELECTRON=true npx electron-packager . jkwxrunnerweb --platform=linux --out ./dist_electron --overwrite  --ignore=node_modules/* --ignore=.git --ignore=public/ --ignore=dist_electron --asar",
+    "build:win": "npx electron-packager . jkwxrunnerweb --platform=win32 --out ./dist_electron --overwrite  --ignore=node_modules/* --ignore=.git --ignore=public/ --ignore=dist_electron --asar"
   },
   "dependencies": {
     "axios": "^0.18.0",
