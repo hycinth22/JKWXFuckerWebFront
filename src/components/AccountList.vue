@@ -1,36 +1,41 @@
 <template>
 	<div>
 		<b-table id="accountList" striped hover :items="items" :fields="fields" responsive>
-		<template slot="CreatedAt" slot-scope="data">
-      {{ data.item.CreatedAt | timeFormart }}
+		<template slot="CreatedAt" slot-scope="{item}">
+      {{ item.CreatedAt | timeFormart }}
 		</template>
-		<template slot="School" slot-scope="data">
-      {{ data.item.SchoolID | schoolFormat }}
+		<template slot="School" slot-scope="{item}">
+      {{ item.SchoolID | schoolFormat }}
 		</template>
-		<template slot="RunDistance" slot-scope="data">
-      {{ data.item.RunDistance | DistanceFormat }}
-      (预计还需 ?? 天)
+		<template slot="DistanceRange" slot-scope="{item}">
+      {{ item.StartDistance | DistanceFormat }} - {{ item.FinishDistance | DistanceFormat }}
+      ({{ (item.FinishDistance-item.StartDistance) | DistanceFormat }})
 		</template>
-		<template slot="DistanceRange" slot-scope="data">
-      {{ data.item.StartDistance | DistanceFormat }} - {{ data.item.FinishDistance | DistanceFormat }}
-      ({{ (data.item.FinishDistance-data.item.StartDistance) | DistanceFormat }})
-		</template>
-		<template slot="Status" slot-scope="data">
-      <span :class="data.item.Status|StatusShowClass">
-			{{ data.item.Status | StatusFormat }}
+		<template slot="Status" slot-scope="{item}">
+      <span :class="item.Status|StatusShowClass">
+			{{ item.Status | StatusFormat }}
       </span>
 		</template>
-		<template slot="LastResult" slot-scope="data">
-      <span :class="data.item.LastResult|ResultShowClass">
-			{{ data.item.LastResult | ResultFormat }}
+		<template slot="LastResult" slot-scope="{item}">
+      <span :class="item.LastResult|ResultShowClass">
+			{{ item.LastResult | ResultFormat }}
       </span>
 		</template>
-		<template slot="LastTime" slot-scope="data">
-      {{ data.item.LastTime | timeFormart }}
+		<template slot="LastTime" slot-scope="{item}">
+      {{ item.LastTime | timeFormart }}
 		</template>
-		<template slot="operate" slot-scope="data">
-        <AccountListItemOperator :account="data.item" :modal_progress_info.sync="modal_progress_info" :modal_log_info.sync="modal_log_info"/>
+		<template slot="operate" slot-scope="{item}">
+        <AccountListItemOperator :account="item" :modal_progress_info.sync="modal_progress_info" :modal_log_info.sync="modal_log_info"/>
 		</template>
+		<template slot="progress" slot-scope="{item}">
+				{{ item.CurrentDistance-item.StartDistance | DistanceFormat}} / {{item.FinishDistance-item.StartDistance | DistanceFormat}}<br>
+		</template>
+		<template slot="estimateReaminDays" slot-scope="{item}">
+			{{ estimateDeadline(item.FinishDistance-item.StartDistance, item.RunDistance) }}
+			*
+			{{ item.RunDistance | DistanceFormat }}
+		</template>
+		
 		</b-table>
         
         <div class="row">
@@ -71,49 +76,38 @@ export default {
     return {
       fields: {
         ID: {
-          label: '编号',
+          label: 'ID',
           sortable: true,
         },
         CreatedAt: {
           label: '创建时间',
           sortable: true,
         },
-        School: {
-          label: '学校',
-          sortable: true,
-        },
+        School: '所在学校',
         StuNum: {
           label: '学号',
           sortable: true,
         },
-        RunDistance: {
-            label: '每日应跑公里',
+        RunDistance: false,
+        DistanceRange: '距离区间',
+		progress: '进度',
+        estimateReaminDays: {
+          label: '预估天数 每日距离',
+          sortable: false,
         },
-        DistanceRange: {
-            label: '距离区间',
-        },
-        Status: {
-            label: '执行状态',
-        },
-        LastResult: {
-            label: '上次运行结果',
-        },
-        LastTime: {
-            label: '上次运行时间',
-            sortable: true,
-        },
-        Memo: {
-            label: '备注',
-        },
-        operate: {
-            label: '操作',
-        },
+        Status: '执行状态',
+        LastResult: '上次运行结果',
+        LastTime: '上次运行时间',
+        operate: '操作',
       },
       modal_progress_info: {},
       modal_log_info: {},
     };
   },
   methods: {
+	estimateDeadline(totalDistance, dailyDistance) {
+		return Math.ceil(totalDistance/dailyDistance);
+	}
   },
   filters: {
     timeFormart(timeStr) {
