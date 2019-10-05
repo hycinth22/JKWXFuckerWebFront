@@ -4,11 +4,11 @@
 		<p class="text-primary" v-if="isLoading">获取中……<p>
 		<div v-if="!isLoading">
             <b-table class="row" id="accountLogs" striped hover :items="logs" :fields="fields" responsive>
-                <template slot="Time" slot-scope="data">
-                    {{ data.item.Time | timeFormart }}
+                <template v-slot:cell(Time)="{item}">
+                    {{ item.Time | timeFormart }}
                 </template>
-                <template slot="Type" slot-scope="data">
-                    {{ data.item.Type | typeFormart }}
+                <template v-slot:cell(Type)="{item}">
+                    {{ item.Type | typeFormart }}
                 </template>
             </b-table>
             <div class="row">
@@ -48,17 +48,11 @@ export default {
   },
   data: function() {
     return {
-      fields: {
-        Time: {
-          label: '时间',
-        },
-        Type: {
-          label: '类型',
-        },
-        Content: {
-          label: '内容',
-        },
-      },
+      fields: [
+		{key: "Time", label: '时间'},
+		{key: "Type", label: '类型'},
+		{key: "Content", label: '内容'},
+      ],
       isLoading: true,
       logs: [],
       page: 1,
@@ -71,7 +65,12 @@ export default {
       return new Date(timeStr).toLocaleString(undefined,{localeMatcher:"lookup",hour12:false});
     },
     typeFormart(type) {
-      return type;
+      const table = {
+        'success': '成功',
+        'fail': '失败',
+        'info': '信息',
+      };
+      return table[type]?table[type]:type;
     },
   },
   methods: {

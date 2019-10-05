@@ -34,12 +34,13 @@
         <b-alert class="col-sm-4" show>当前显示记录条数：{{count_wanted_accounts}}</b-alert>
         <div class="col-sm-4">
             <b-form-checkbox id="hidden_terminated" v-model="hidden_terminated" value="yes" unchecked-value="">
-              隐藏已终止
+              隐藏已确认完成
             </b-form-checkbox>
         </div>
         <div class="col-sm-4">
             <b-button @click="calcTotalDistance">计算区间长度总和</b-button>
             <b-button @click="updateList">刷新列表</b-button>
+			<b-button @click="terminateAllFinished">结算所有完成</b-button>
         </div>
     </div>
   </div>
@@ -99,6 +100,21 @@ export default {
         },0);
         alert(total.toFixed(2));
     },
+	terminateAllFinished() {
+		var allP = [];
+		for (var acc of this.wanted_accounts) {
+			if (acc.Status==="finished") {
+				console.log(`terminate ${acc.ID} ${acc.StuNum}`, acc);
+				allP.push(service.updateAccountStatus(acc.ID, "terminated").then(()=> {
+					this.$bvToast.toast(`已结算帐号 ${acc.ID} ${acc.StuNum}`, {
+						title: '帐号更新完成',
+						autoHideDelay: 5000,
+					});
+				}));
+			}
+		}
+		Promise.all(allP).then(()=>this.updateList());
+	},
   },
   mounted() {
     this.updateList();

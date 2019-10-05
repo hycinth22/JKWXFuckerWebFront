@@ -1,37 +1,37 @@
 <template>
 	<div>
 		<b-table id="accountList" striped hover :items="items" :fields="fields" responsive>
-		<template slot="CreatedAt" slot-scope="{item}">
+		<template v-slot:cell(CreatedAt)="{item}">
       {{ item.CreatedAt | timeFormart }}
 		</template>
-		<template slot="School" slot-scope="{item}">
+		<template v-slot:cell(School)="{item}">
       {{ item.SchoolID | schoolFormat }}
 		</template>
-		<template slot="DistanceRange" slot-scope="{item}">
+		<template v-slot:cell(DistanceRange)="{item}">
       {{ item.StartDistance | DistanceFormat }} - {{ item.FinishDistance | DistanceFormat }}
       ({{ (item.FinishDistance-item.StartDistance) | DistanceFormat }})
 		</template>
-		<template slot="Status" slot-scope="{item}">
+		<template v-slot:cell(Status)="{item}">
       <span :class="item.Status|StatusShowClass">
 			{{ item.Status | StatusFormat }}
       </span>
 		</template>
-		<template slot="LastResult" slot-scope="{item}">
+		<template v-slot:cell(LastResult)="{item}">
       <span :class="item.LastResult|ResultShowClass">
 			{{ item.LastResult | ResultFormat }}
       </span>
 		</template>
-		<template slot="LastTime" slot-scope="{item}">
+		<template v-slot:cell(LastTime)="{item}">
       {{ item.LastTime | timeFormart }}
 		</template>
-		<template slot="operate" slot-scope="{item}">
+		<template v-slot:cell(operate)="{item}">
         <AccountListItemOperator :account="item" :modal_progress_info.sync="modal_progress_info" :modal_log_info.sync="modal_log_info"/>
 		</template>
-		<template slot="progress" slot-scope="{item}">
+		<template v-slot:cell(progress)="{item}">
 				{{ item.CurrentDistance-item.StartDistance | DistanceFormat}} / {{item.FinishDistance-item.StartDistance | DistanceFormat}}<br>
 		</template>
-		<template slot="estimateReaminDays" slot-scope="{item}">
-			{{ estimateDeadline(item.FinishDistance-item.StartDistance, item.RunDistance) }}
+		<template v-slot:cell(estimateReaminDays)="{item}">
+			{{ estimateDeadline(item.FinishDistance-item.CurrentDistance, item.RunDistance) }}
 			*
 			{{ item.RunDistance | DistanceFormat }}
 		</template>
@@ -41,6 +41,7 @@
         <div class="row">
             <div class="col-sm-4">
                 <b-button v-b-modal.modal-quickCopy>快速复制</b-button>
+				
             </div>
         </div>
     
@@ -74,32 +75,19 @@ export default {
   },
   data: function() {
     return {
-      fields: {
-        ID: {
-          label: 'ID',
-          sortable: true,
-        },
-        CreatedAt: {
-          label: '创建时间',
-          sortable: true,
-        },
-        School: '所在学校',
-        StuNum: {
-          label: '学号',
-          sortable: true,
-        },
-        RunDistance: false,
-        DistanceRange: '距离区间',
-		progress: '进度',
-        estimateReaminDays: {
-          label: '预估天数 每日距离',
-          sortable: false,
-        },
-        Status: '执行状态',
-        LastResult: '上次运行结果',
-        LastTime: '上次运行时间',
-        operate: '操作',
-      },
+      fields: [
+        { key: 'ID', sortable: true},
+		{ key: 'CreatedAt', label: '创建时间'},
+		{ key: 'School', label: '所在学校', sortable: true},
+		{ key: 'StuNum', label: '学号'},
+		{ key: 'DistanceRange', label: '距离区间'},
+		{ key: 'progress', label: '进度'},
+		{ key: 'estimateReaminDays', label: '预估天数 每日距离'},
+		{ key: 'Status', label: '执行状态'},
+		{ key: 'LastResult', label: '上次运行结果'},
+		{ key: 'LastTime', label: '上次运行时间'},
+		{ key: 'operate', label: '操作'},
+      ],
       modal_progress_info: {},
       modal_log_info: {},
     };

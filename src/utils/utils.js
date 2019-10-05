@@ -16,13 +16,13 @@ function formatDistance(distance) {
 function getStatusText(status) {
     const table = {
       normal: "正常",
-      pause: "暂停(pause)",
+      inqueue: "排队中准备执行",
       running: "正在执行",
-      finished: "完成",
-      suspend: "暂停(suspend)",
-      terminated: "终止",
-      aborted: "中断",
-      inqueue: "执行前排队",
+      finished: "完成待确认",
+      terminated: "完成已确认",
+      pause: "暂停(待续)",
+      suspend: "暂停(故障)",
+      aborted: "停止",
     };
     let formated = table[status];
     return formated?formated:status;

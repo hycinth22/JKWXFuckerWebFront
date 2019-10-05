@@ -31,7 +31,7 @@ function getSportResult(uid) {
 }
 
 function getAccountLog(uid, offset, limit) {
-      return axios.get(api_root + "account/" + uid.toString() + "/logs/?offset="+offset.toString()+"&limit="+limit.toString())
+      return axios.get(api_root + "account/" + uid.toString() + "/logs?offset="+offset.toString()+"&limit="+limit.toString())
       .then(function (response) {
           if (response.status === 200) {
               return response.data;
@@ -44,8 +44,27 @@ function getAccountLog(uid, offset, limit) {
       });
 }
 
+function updateAccountStatus(uid, newStatus) {
+	return new Promise(function(resolve, reject) {
+		axios.put(api_root + "account/" + uid.toString() + "/status", {"Status": newStatus})
+		.then(function (response) {
+          if (response.status === 202) {
+              resolve(response.data);
+              return;
+          } else {
+              reject("Status Code !== 202");
+          }
+      })
+      .catch(function (err) {
+          console.error("Fetch Error:" + err);
+          reject("Fetch Error:" + err);
+      });
+	})
+}
+
 export default {
   getAllAccounts,
   getSportResult,
   getAccountLog,
+  updateAccountStatus,
 };
