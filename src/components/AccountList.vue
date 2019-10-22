@@ -32,8 +32,9 @@
 		</template>
 		<template v-slot:cell(estimateReaminDays)="{item}">
 			{{ estimateDeadline(item.FinishDistance-item.CurrentDistance, item.RunDistance) }}
-			*
-			{{ item.RunDistance | DistanceFormat }}
+		</template>
+		<template v-slot:cell(dailyDistance)="{item}">
+				{{ item.RunDistance | DistanceFormat }}
 		</template>
 		
 		</b-table>
@@ -76,13 +77,15 @@ export default {
   data: function() {
     return {
       fields: [
+		{ key: 'OwnerID', label: 'OID', sortable: true},
         { key: 'ID', sortable: true},
 		{ key: 'CreatedAt', label: '创建时间'},
 		{ key: 'School', label: '所在学校', sortable: true},
 		{ key: 'StuNum', label: '学号'},
 		{ key: 'DistanceRange', label: '距离区间'},
-		{ key: 'progress', label: '进度'},
-		{ key: 'estimateReaminDays', label: '预估天数 每日距离'},
+		{ key: 'progress', label: '达标'},
+		{ key: 'estimateReaminDays', label: '预估天数', sortable: true},
+		{ key: 'dailyDistance', label: '每日距离'},
 		{ key: 'Status', label: '执行状态'},
 		{ key: 'LastResult', label: '上次运行结果'},
 		{ key: 'LastTime', label: '上次运行时间'},
