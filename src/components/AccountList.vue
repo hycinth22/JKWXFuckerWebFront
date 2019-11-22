@@ -30,11 +30,8 @@
 		<template v-slot:cell(progress)="{item}">
 				{{ item.CurrentDistance-item.StartDistance | DistanceFormat}} / {{item.FinishDistance-item.StartDistance | DistanceFormat}}<br>
 		</template>
-		<template v-slot:cell(estimateReaminDays)="{item}">
-			{{ estimateDeadline(item.FinishDistance-item.CurrentDistance, item.RunDistance) }}
-		</template>
 		<template v-slot:cell(dailyDistance)="{item}">
-				{{ item.RunDistance | DistanceFormat }}
+			{{ item.RunDistance | DistanceFormat }}
 		</template>
 		
 		</b-table>
@@ -81,14 +78,14 @@ export default {
         { key: 'ID', sortable: true},
 		{ key: 'CreatedAt', label: '创建时间'},
 		{ key: 'School', label: '所在学校', sortable: true},
-		{ key: 'StuNum', label: '学号'},
-		{ key: 'DistanceRange', label: '距离区间'},
-		{ key: 'progress', label: '达标'},
-		{ key: 'estimateReaminDays', label: '预估天数', sortable: true},
-		{ key: 'dailyDistance', label: '每日距离'},
-		{ key: 'Status', label: '执行状态'},
-		{ key: 'LastResult', label: '上次运行结果'},
-		{ key: 'LastTime', label: '上次运行时间'},
+		{ key: 'StuNum', label: '学号', sortable: true},
+		{ key: 'DistanceRange', label: '跑步区间'},
+		{ key: 'progress', label: '已刷/应刷'},
+		{ key: 'estimate_remain_days', label: '预估天数', sortable: true},
+		{ key: 'dailyDistance', label: '每日'},
+		{ key: 'Status', label: '状态'},
+		{ key: 'LastResult', label: '上次结果'},
+		{ key: 'LastTime', label: '上次时间'},
 		{ key: 'operate', label: '操作'},
       ],
       modal_progress_info: {},

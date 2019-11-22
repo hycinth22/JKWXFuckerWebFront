@@ -24,12 +24,23 @@ export default {
   computed: {
     accountQuickCopyText() {
         let totalDistance = 0.0;
-        return this.accounts.reduce((result, cur)=>{
-            let distance = cur.FinishDistance-cur.StartDistance;
+        return this.accounts.reduce((result, acc)=>{
+			let start = acc.StartDistance, finish = acc.FinishDistance;
+			// 直接跑满的则按照跑满上限量，多跑的不计入距离。
+			// 对于不跑满的则特殊处理，按照实际已跑量计算完成距离。
+			if (finish < acc.QualifiedDistance & acc.CurrentDistance > finish) {
+				finish = acc.CurrentDistance;
+			}
+			let withrange = (acc.FinishDistance < acc.QualifiedDistance)?true:this.withrange;
+			// 不是从0开始到跑满的，强制开启withrange
+			if (acc.StartDistance >0 || acc.FinishDistance < acc.QualifiedDistance) {
+				withrange = true;
+			}
+            let distance = finish-start;
             totalDistance += distance;
             return result
-            + utils.getSchoolName(cur.SchoolID) + " | " + cur.StuNum 
-            + " | " + this.generateDistanceText(cur.StartDistance, cur.FinishDistance, distance, this.withrange)
+            + utils.getSchoolName(acc.SchoolID) + " | " + acc.StuNum 
+            + " | " + this.generateDistanceText(start, finish, distance, withrange)
             + "\n";
         }, "") + "共计" + this.accounts.length + "个帐号" + totalDistance.toFixed(2) + "公里";
     },
@@ -46,7 +57,7 @@ export default {
   methods: {
     generateDistanceText(start, finish, distance, withrange) {
         if (withrange) {
-            return start.toFixed(2) + "-" + finish.toFixed(2) + " \t(" + distance.toFixed(2) + ")";
+            return distance.toFixed(2) + " \t(" + start.toFixed(2) + "-" + finish.toFixed(2) + ")";
         }
         return distance.toFixed(2);
     },
